@@ -46,5 +46,7 @@ def RadixSortAlpha(new_list):
     column_counter = 0
 
 print(example_num)
+print(RadixSortNum(example_num))
+
 
 
