@@ -78,12 +78,5 @@ def CountingSort_STABLE(new_list):
 
 a_list = [5, 2, 9, 5, 2, 3, 5]
 print("Sorted List:", CountingSort_STABLE(a_list))
-for i in range(len(a_list)):
-    if a_list[i] <= a_list[i+1]:
-        continue
-    else:
-        print("fail!")
-        break
-    print("pass!")
 
     
