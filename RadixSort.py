@@ -12,8 +12,8 @@ def RadixSortNum(new_list):
     max_column= 0
     #find max column
     for element in (new_list):
-        if len(element) > max_column:
-            max_column=len(element)
+        if len(str(element)) > max_column:
+            max_column=len(str(element))
     #finished finding max_column, now do the operation
     for column in range(max_column,0,-1):
         #now, compare every element in new_list
@@ -22,9 +22,6 @@ def RadixSortNum(new_list):
             count_array[_]=[]
 
         for element in (new_list):
-            #skips the number if it doesnt have the digit
-            if len(element)< column:
-                continue
             #finds val to put inside count array
             key = (element // (base**column))% base
             #after we get the key, append the item inside count-array
@@ -46,6 +43,7 @@ def RadixSortAlpha(new_list):
     column_counter = 0
 
 print(example_num)
+print("hello world")
 print(RadixSortNum(example_num))
 
 
