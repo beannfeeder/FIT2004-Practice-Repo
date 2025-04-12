@@ -26,7 +26,7 @@ class Graph:
         while len(discovered) > 0:
             x= discovered.pop(0) # x is the current node in the BFS
             x.visited = True
-            return_bfs.append(x)
+            return_bfs.append(x.id)
             for edge in x.edges:
                 y = edge.y
                 if y.visited == False:
@@ -45,7 +45,7 @@ class Graph:
         while len(discovered) > 0:
             x= discovered.pop(0) # x is the current node in the BFS
             x.visited = True
-            return_dfs.append(x)
+            return_dfs.append(x.id)
             for edge in x.edges:
                 y = edge.y
                 if y.visited == False:
