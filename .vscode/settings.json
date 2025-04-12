@@ -1,4 +1,5 @@
 {
     "files.autoSave": "onWindowChange",
-    "git.enabled": true
+    "git.enabled": true,
+    "git.alwaysShowStagedChangesResourceGroup": false
 }
