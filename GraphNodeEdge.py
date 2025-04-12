@@ -29,7 +29,7 @@ class Graph:
             return_bfs.append(x)
             for edge in x.edges:
                 y = edge.y
-                if y.discovered == False:
+                if y.visited == False:
                     discovered.append(y)
                     y.visited = True # mark y as discovered
         return return_bfs
@@ -48,7 +48,7 @@ class Graph:
             return_dfs.append(x)
             for edge in x.edges:
                 y = edge.y
-                if y.discovered == False:
+                if y.visited == False:
                     discovered.append(y)
                     y.visited = True # mark y as discovered
         return return_dfs
