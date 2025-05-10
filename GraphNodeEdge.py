@@ -70,11 +70,12 @@ class Node:
         return return_str
        
 class Edge:
-    def __init__(self, x, y, w):
+    def __init__(self, x, y, w,t):
         # x = node 1, y = node 2, w = weight
         self.x = x
         self.y = y
-        self.w = w
+        self.weight = w
+        self.time = t
 
 
 if __name__ == "__main__":
