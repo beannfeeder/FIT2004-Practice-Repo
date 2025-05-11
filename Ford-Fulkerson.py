@@ -5,16 +5,25 @@ class Graph:
     """
     A class to represent a directed graph using adjacency list representation.
     """
-    def __init__(self, nodes, edges):
+    def __init__(self, nodes):
         self.adj = [[] for _ in range(len(nodes))] #adjacency list
-        for edge in edges: #edge is class Edge
-            self.adj[edge.source].append(edge)
+        
+    def graph_add_edge(self, Edge):
+        pass
     
     def ford_fulkerson(self): 
+        # Placeholder for implementation
+        print("test")
         pass
         #approach: residual network
         #start from 0 flow
         #bfs
+        """
+        
+        current_flow = min(path_capacity)
+        for i in path:
+            update flow of all edges to current_flow
+        """
         #augment path
         #if can't augment anymore, stop
         #return max_flow
@@ -28,7 +37,7 @@ class Node:
         """
         # id = id of the node
         self.id = id
-        self.edges = edges # list of other nodes connected to this node
+        self.edges = edges # list of edges connecting this node to other nodes
 
 #Res_Node: id, name, neighbours, weight, flow
 class RES_Node:
