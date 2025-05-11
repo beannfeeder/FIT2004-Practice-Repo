@@ -1,3 +1,4 @@
+from collections import deque
 
 #classes
 #GRAPH - one way
@@ -6,28 +7,98 @@ class Graph:
     A class to represent a directed graph using adjacency list representation.
     """
     def __init__(self, nodes):
-        self.adj = [[] for _ in range(len(nodes))] #adjacency list
-        
-    def graph_add_edge(self, Edge):
-        pass
-    
-    def ford_fulkerson(self): 
+        self.adj = [[] for _ in range(len(nodes))]  # adjacency list
+        self.nodes = nodes  # list of nodes
+
+    def graph_add_edge(self, edge):
+        """
+        Add an edge to the graph.
+
+        Args:
+            edge (Edge): The edge to add.
+        """
+        self.adj[edge.source].append(RES_EDGE(edge.source, edge.target, edge.capacity))
+        self.adj[edge.target].append(RES_EDGE(edge.target, edge.source, 0))  # Reverse edge with 0 capacity
+
+    def bfs(self, source, sink, parent):
+        """
+        Perform BFS to find an augmenting path in the residual graph.
+
+        Args:
+            source (int): The source node.
+            sink (int): The sink node.
+            parent (list): To store the path.
+
+        Returns:
+            bool: True if an augmenting path is found, False otherwise.
+        """
+        visited = [False] * len(self.adj)
+        queue = deque([source])
+        visited[source] = True
+
+        while queue:
+            current = queue.popleft()
+
+            for edge in self.adj[current]:
+                if not visited[edge.target] and edge.capacity - edge.flow > 0:  # Check for residual capacity
+                    queue.append(edge.target)
+                    visited[edge.target] = True
+                    parent[edge.target] = edge
+                    if edge.target == sink:
+                        return True
+
+        return False
+
+    def ford_fulkerson(self, source, sink):
+        parent = [None] * len(self.adj)
+        max_flow = 0
+
+        # Augment the flow while there is a path from source to sink
+        while self.bfs(source, sink, parent):
+            # Find the bottleneck capacity (minimum residual capacity along the path)
+            path_flow = float('Inf')
+            current = sink
+            while current != source:
+                edge = parent[current]
+                path_flow = min(path_flow, edge.capacity - edge.flow)
+                current = edge.source
+
+            # Update the flow along the path
+            current = sink
+            while current != source:
+                edge = parent[current]
+                edge.flow += path_flow
+                # Find the reverse edge and update its flow
+                for rev_edge in self.adj[edge.target]:
+                    if rev_edge.target == edge.source:
+                        rev_edge.flow -= path_flow
+                        break
+                current = edge.source
+
+            max_flow += path_flow
+
+        return max_flow
+    """
         # Placeholder for implementation
         print("test")
         pass
         #approach: residual network
         #start from 0 flow
+        current_flow = 0
+        while True:
+            if current_flow == max():#flow has reached max capacity from source
+                break
+
         #bfs
-        """
         
-        current_flow = min(path_capacity)
-        for i in path:
-            update flow of all edges to current_flow
-        """
+        
+    current_flow = min(path_capacity)
+    for i in path:
+          #  update flow of all edges to current_flow
         #augment path
         #if can't augment anymore, stop
-        #return max_flow
-
+    #        return max_flow
+    """
 
 #NODE - id, name, neighbours, weight
 class Node:
