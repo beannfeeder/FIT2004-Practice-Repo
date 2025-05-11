@@ -40,6 +40,7 @@ class Graph:
             current = queue.popleft()
         #find augmenting path, if no edges starting from the source leads to the sink, no augmenting path found
             for edge in self.adj[current]:
+                #forward edge: residual capacity > 0
                 if not visited[edge.target] and edge.capacity - edge.flow > 0:  # Check for residual capacity
                     queue.append(edge.target)
                     visited[edge.target] = True
@@ -167,5 +168,11 @@ for edge in edges:
 # Find the maximum flow
 source = 0  # S
 sink = 5    # F
+for node in graph.adj:
+    for edge in node:
+        print(edge.capacity)
+print("BEFORE")
+print("apple")
 max_flow = graph.ford_fulkerson(source, sink)
+
 print(f"Maximum Flow: {max_flow}")
