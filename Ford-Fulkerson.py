@@ -38,7 +38,7 @@ class Graph:
 
         while queue:
             current = queue.popleft()
-
+        #find augmenting path, if no edges starting from the source leads to the sink, no augmenting path found
             for edge in self.adj[current]:
                 if not visited[edge.target] and edge.capacity - edge.flow > 0:  # Check for residual capacity
                     queue.append(edge.target)
@@ -47,30 +47,46 @@ class Graph:
                     if edge.target == sink:
                         return True
 
+        #no augmenting path found, return false to terminate the BFS
         return False
 
     def ford_fulkerson(self, source, sink):
+        """
+        Approach:
+        Start from 0 flow
+        while loop bfs to check for augmenting path
+            current_flow = min(capacity of all edges)
+            update flow of all edges to current_flow
+            loop back
+
+        if can't augment anymore, stop
+
+        return max_flow
+        """
         parent = [None] * len(self.adj)
         max_flow = 0
 
         # Augment the flow while there is a path from source to sink
         while self.bfs(source, sink, parent):
-            # Find the bottleneck capacity (minimum residual capacity along the path)
+            # start from the sink node
             path_flow = float('Inf')
             current = sink
             while current != source:
                 edge = parent[current]
-                path_flow = min(path_flow, edge.capacity - edge.flow)
-                current = edge.source
+                path_flow = min(path_flow, edge.capacity - edge.flow) # updating the flow to the minumum
+                current = edge.source #backtrack
 
             # Update the flow along the path
             current = sink
             while current != source:
                 edge = parent[current]
                 edge.flow += path_flow
+                edge.capacity -= path_flow
+
                 # Find the reverse edge and update its flow
                 for rev_edge in self.adj[edge.target]:
-                    if rev_edge.target == edge.source:
+                    if rev_edge.target == edge.source: #unsure
+                        rev_edge.capacity += path_flow
                         rev_edge.flow -= path_flow
                         break
                 current = edge.source
@@ -78,27 +94,7 @@ class Graph:
             max_flow += path_flow
 
         return max_flow
-    """
-        # Placeholder for implementation
-        print("test")
-        pass
-        #approach: residual network
-        #start from 0 flow
-        current_flow = 0
-        while True:
-            if current_flow == max():#flow has reached max capacity from source
-                break
 
-        #bfs
-        
-        
-    current_flow = min(path_capacity)
-    for i in path:
-          #  update flow of all edges to current_flow
-        #augment path
-        #if can't augment anymore, stop
-    #        return max_flow
-    """
 
 #NODE - id, name, neighbours, weight
 class Node:
@@ -141,20 +137,35 @@ class RES_EDGE:
         self.flow = 0 # current flow of the edge
 
 
-#methods
-# FORD FULKERSON
-print("ford fulkerson")
-apple = [[1, 2, 3, 5], [2,4,5,6]]
-for index in apple:
-    print(index)
-print(apple)
 
 """
 Simple question:
      2         
   A --- C---  
  /2         \ 2
-S            F           from intuition, it should be 2 + 1, SACF can hold 2, SBDF can hold 1
+S            F       it should be 2 + 1, SACF can hold 2, SBDF can hold 1 returns a maxflow of 3
  \ 3   1     /
    \- B----D/ 3
 """
+
+# Define nodes and edges
+nodes = [0, 1, 2, 3, 4, 5]
+edges = [
+    Edge(0, 1, 2),  # S -> A with capacity 2
+    Edge(0, 2, 3),  # S -> B with capacity 3
+    Edge(1, 3, 2),  # A -> C with capacity 2
+    Edge(2, 4, 1),  # B -> D with capacity 1
+    Edge(3, 5, 2),  # C -> F with capacity 2
+    Edge(4, 5, 3)   # D -> F with capacity 3
+]
+
+# Create the graph
+graph = Graph(nodes)
+for edge in edges:
+    graph.graph_add_edge(edge)
+
+# Find the maximum flow
+source = 0  # S
+sink = 5    # F
+max_flow = graph.ford_fulkerson(source, sink)
+print(f"Maximum Flow: {max_flow}")
