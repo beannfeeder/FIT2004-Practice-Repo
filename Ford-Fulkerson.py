@@ -1,3 +1,19 @@
+"""
+Feedback from Dr. Ian:
+1. To avoid confusion, RES_EDGE should just have one attribute for weight. No need to have self.flow in line-139 and this maks the whole line-44 complex. On the other hand, the Edge class as per line-120 should have both flow and capacity attributes.
+2. Think you want to reset parent at the end of each iteration? For example after line-95. It is fine for now but no harm resetting it.
+3. You shouldn't need the loop in line-88 if you follow what I said in class about forward edge storign reference to backward edge and vice versa. Thus you line-13 graph_add_edge() needs to be udpated.
+4. The whole update in block-89 is wrong. Logic for updating the augmented edge seems off for the entire block. Consider the following logic:
+        If augmenting a forward edge:
+            the forward edge weight -bottleneck.
+            the backward edge weight +bottleneck.
+            the flow edge +bottleneck.
+        If augmenting a backward edge:
+            the backward edge weight -bottleneck.
+            the forward edge weight +bottleneck.
+            the flow edge -bottleneck.
+
+"""
 from collections import deque
 
 #classes
@@ -93,7 +109,7 @@ class Graph:
                 current = edge.source
 
             max_flow += path_flow
-
+        
         return max_flow
 
 
@@ -165,6 +181,9 @@ graph = Graph(nodes)
 for edge in edges:
     graph.graph_add_edge(edge)
 
+banana = []*5
+print(banana)
+print("lol")
 # Find the maximum flow
 source = 0  # S
 sink = 5    # F
